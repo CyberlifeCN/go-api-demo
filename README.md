@@ -17,7 +17,7 @@ $ cd go-api-demo/
 $ bee run -gendoc=true -downdoc=true
 
 
-$ go get code.google.com/p/go-mysql-driver/mysql
+$ go get -u github.com/go-sql-driver/mysql
 $ go get github.com/satori/go.uuid
 
 
