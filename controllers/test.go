@@ -115,6 +115,7 @@ func (t *TestController) GetAll() {
 
 // @Title CreateTest
 // @Description create test
+// @Param	Authorization		header 	string	true		"Bearer access_token"
 // @Param	body		body 	models.Test	true		"body for test content"
 // @Success 200 {object} models.TestActionOneResp
 // @Failure 403 body is empty
@@ -166,7 +167,7 @@ func (t *TestController) Post() {
 	}
 
 	// TODO check access_token
-	
+
 	// Creating UUID Version 4
 	uid := strings.Replace(uuid.NewV4().String(), "-", "", -1)
 	test.Id = uid
@@ -190,6 +191,7 @@ func (t *TestController) Post() {
 
 // @Title Update
 // @Description update the test
+// @Param	Authorization		header 	string	true		"Bearer access_token"
 // @Param	uid		path 	string	true		"The uid you want to update"
 // @Param	body		body 	models.Test	true		"body for test content"
 // @Success 200 {object} models.TestActionOneResp
