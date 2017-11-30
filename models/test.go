@@ -22,19 +22,19 @@ type TestPaginationResultSet struct {
 	Datas 		[]Test 										`json:"datas"`
 }
 
-type QueryTestAllResponse struct {
+type TestQueryAllResp struct {
 	Code   		int 											`json:"err_code"`
 	Msg    		string 										`json:"err_msg"`
   Rs   	 		TestPaginationResultSet 	`json:"rs"`
 }
 
-type QueryTestOneResponse struct {
+type TestQueryOneResp struct {
 	Code   		int 											`json:"err_code"`
 	Msg    		string 										`json:"err_msg"`
   Rs   	 		Test 											`json:"rs"`
 }
 
-type ActionTestOneResponse struct {
+type TestActionOneResp struct {
 	Code   		int 											`json:"err_code"`
 	Msg    		string 										`json:"err_msg"`
   Rs   	 		string 										`json:"rs"`
@@ -98,14 +98,18 @@ func GetAllTestCount() int {
 }
 
 
-func GetTest(uid string) Test {
+func GetTest(uid string) *Test {
 	//查询数据
 	var _id string
 	var name string
 	var ctime int64
 	var mtime int64
 	err := db.QueryRow("SELECT _id,name,ctime,mtime FROM test WHERE _id=?", uid).Scan(&_id, &name, &ctime, &mtime)
-	checkErr(err)
+	if (err != nil) {
+		return nil
+	} else {
+	  panic(err)
+	}
 
 	var test = &Test{}
 	test.Id = _id
@@ -114,7 +118,7 @@ func GetTest(uid string) Test {
 	test.Mtime = mtime
 	fmt.Println(test)
 
-	return *test
+	return test
 }
 
 

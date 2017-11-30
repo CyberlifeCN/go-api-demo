@@ -24,7 +24,7 @@ type TestController struct {
 // @Title Get
 // @Description get test by uid
 // @Param	uid		path 	string	true		"The key for test"
-// @Success 200 {object} models.QueryTestOneResponse
+// @Success 200 {object} models.TestQueryOneResp
 // @Failure 403 :uid is empty
 // @router /:uid [get]
 func (t *TestController) Get() {
@@ -34,17 +34,27 @@ func (t *TestController) Get() {
 	uid := t.GetString(":uid")
   beego.Trace(uid)
 
-	test := models.GetTest(uid)
-	beego.Trace(test)
+	var test = models.GetTest(uid)
+	if (test != nil) {
+		beego.Trace(test)
 
-	var rs = &models.QueryTestOneResponse{
-		Code: 200,
-		Msg: "Success",
-		Rs: test,
+		var rs = &models.TestQueryOneResp{
+			Code: 200,
+			Msg: "Success",
+			Rs: *test,
+		}
+
+		t.Data["json"] = *rs
+		t.ServeJSON()
+	} else {
+		var rs = &models.TestQueryOneResp{
+			Code: 404,
+			Msg: "Not Found",
+		}
+
+		t.Data["json"] = *rs
+		t.ServeJSON()
 	}
-
-	t.Data["json"] = *rs
-	t.ServeJSON()
 }
 
 
@@ -57,7 +67,7 @@ func (t *TestController) Get() {
 // form（不常用）
 // @Param	page 		query		int		1		false		"The page number of dataset in mysql:test"
 // @Param	limit 	query		int		20	false		"One page size"
-// @Success 200		{object} models.QueryTestAllResponse
+// @Success 200		{object} models.TestQueryAllResp
 // @router / [get]
 func (t *TestController) GetAll() {
 	uri := t.Ctx.Input.URI()
@@ -87,7 +97,7 @@ func (t *TestController) GetAll() {
 	}
 	beego.Trace("total_page:", total_page)
 
-	var rs = &models.QueryTestAllResponse{
+	var rs = &models.TestQueryAllResp{
 		Code: 200,
 		Msg: "Success",
 		Rs: models.TestPaginationResultSet{
@@ -106,7 +116,7 @@ func (t *TestController) GetAll() {
 // @Title CreateTest
 // @Description create test
 // @Param	body		body 	models.Test	true		"body for test content"
-// @Success 200 {object} models.ActionTestOneResponse
+// @Success 200 {object} models.TestActionOneResp
 // @Failure 403 body is empty
 // @router / [post]
 func (t *TestController) Post() {
@@ -117,17 +127,57 @@ func (t *TestController) Post() {
 	var test models.Test
 	json.Unmarshal(t.Ctx.Input.RequestBody, &test)
 	beego.Trace(test)
+	if (test.Name == "") {
+		var rs = &models.TestActionOneResp{
+			Code: 403,
+			Msg: "Bad Request",
+		}
 
+		t.Data["json"] = *rs
+		t.ServeJSON()
+		return
+	}
+
+	//Authorization=="Bearer access_token"
+	auth := t.Ctx.Input.Header("Authorization")
+	beego.Trace(auth)
+	if (auth == "") {
+		var rs = &models.TestActionOneResp{
+			Code: 401,
+			Msg: "Unauthorized",
+		}
+
+		t.Data["json"] = *rs
+		t.ServeJSON()
+		return
+	}
+
+	access_token := strings.Replace(auth, "Bearer ", "", -1)
+	beego.Trace(access_token)
+	if (access_token == "") {
+		var rs = &models.TestActionOneResp{
+			Code: 401,
+			Msg: "Unauthorized",
+		}
+
+		t.Data["json"] = *rs
+		t.ServeJSON()
+		return
+	}
+
+	// TODO check access_token
+	
 	// Creating UUID Version 4
 	uid := strings.Replace(uuid.NewV4().String(), "-", "", -1)
 	test.Id = uid
   timestamp := time.Now().UnixNano() / 1000000 // 毫秒
 	test.Ctime = timestamp
+	test.Mtime = timestamp
 	beego.Trace(test)
 
 	models.AddTest(test)
 
-	var rs = &models.ActionTestOneResponse{
+	var rs = &models.TestActionOneResp{
 		Code: 200,
 		Msg: "Success",
 		Rs: uid,
@@ -142,7 +192,7 @@ func (t *TestController) Post() {
 // @Description update the test
 // @Param	uid		path 	string	true		"The uid you want to update"
 // @Param	body		body 	models.Test	true		"body for test content"
-// @Success 200 {object} models.Test
+// @Success 200 {object} models.TestActionOneResp
 // @Failure 403 :uid is empty, or body is empty
 // @router /:uid [put]
 func (t *TestController) Put() {
@@ -155,12 +205,52 @@ func (t *TestController) Put() {
 	json.Unmarshal(t.Ctx.Input.RequestBody, &test)
 	beego.Trace(test)
 
+	if (test.Name == "") {
+		var rs = &models.TestActionOneResp{
+			Code: 403,
+			Msg: "Bad Request",
+		}
+
+		t.Data["json"] = *rs
+		t.ServeJSON()
+		return
+	}
+
+	//Authorization=="Bearer access_token"
+	auth := t.Ctx.Input.Header("Authorization")
+	beego.Trace(auth)
+	if (auth == "") {
+		var rs = &models.TestActionOneResp{
+			Code: 401,
+			Msg: "Unauthorized",
+		}
+
+		t.Data["json"] = *rs
+		t.ServeJSON()
+		return
+	}
+
+	access_token := strings.Replace(auth, "Bearer ", "", -1)
+	beego.Trace(access_token)
+	if (access_token == "") {
+		var rs = &models.TestActionOneResp{
+			Code: 401,
+			Msg: "Unauthorized",
+		}
+
+		t.Data["json"] = *rs
+		t.ServeJSON()
+		return
+	}
+
+	// TODO check access_token
+
 	test.Id = uid
 	timestamp := time.Now().UnixNano() / 1000000 // 毫秒
 	test.Mtime = timestamp
 	models.UpdateTest(uid, &test)
 
-	var rs = &models.ActionTestOneResponse{
+	var rs = &models.TestActionOneResp{
 		Code: 200,
 		Msg: "Success",
 		Rs: uid,
@@ -173,8 +263,9 @@ func (t *TestController) Put() {
 
 // @Title Delete
 // @Description delete the test
+// @Param	Authorization		header 	string	true		"Bearer access_token"
 // @Param	uid		path 	string	true		"The uid you want to delete"
-// @Success 200 {object} models.ActionTestOneResponse
+// @Success 200 {object} models.TestActionOneResp
 // @Failure 403 uid is empty
 // @router /:uid [delete]
 func (t *TestController) Delete() {
@@ -184,9 +275,38 @@ func (t *TestController) Delete() {
 	uid := t.GetString(":uid")
 	beego.Trace(uid)
 
+	//Authorization=="Bearer access_token"
+	auth := t.Ctx.Input.Header("Authorization")
+	beego.Trace(auth)
+	if (auth == "") {
+		var rs = &models.TestActionOneResp{
+			Code: 401,
+			Msg: "Unauthorized",
+		}
+
+		t.Data["json"] = *rs
+		t.ServeJSON()
+		return
+	}
+
+	access_token := strings.Replace(auth, "Bearer ", "", -1)
+	beego.Trace(access_token)
+	if (access_token == "") {
+		var rs = &models.TestActionOneResp{
+			Code: 401,
+			Msg: "Unauthorized",
+		}
+
+		t.Data["json"] = *rs
+		t.ServeJSON()
+		return
+	}
+
+	// TODO check access_token
+
 	models.DeleteTest(uid)
 
-	var rs = &models.ActionTestOneResponse{
+	var rs = &models.TestActionOneResp{
 		Code: 200,
 		Msg: "Success",
 		Rs: uid,
