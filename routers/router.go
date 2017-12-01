@@ -25,6 +25,11 @@ func init() {
 				&controllers.PersonController{},
 			),
 		),
+		beego.NSNamespace("/memcache",
+			beego.NSInclude(
+				&controllers.MemcacheController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }

@@ -60,7 +60,7 @@ func (t *PersonController) Get() {
 
 // @Title CreatePerson
 // @Description create person
-// @Param	Authorization		header 	string	true		"Bearer access_token"
+// @Param	Authorization		header 	string	"Bearer access_token"		true		"Bearer access_token"
 // @Param	body		body 	models.Person	true		"body for person content"
 // @Success 200 {object} models.PersonActionOneResp
 // @Failure 403 body is empty
@@ -133,7 +133,7 @@ func (t *PersonController) Post() {
 
 // @Title Update
 // @Description update the person
-// @Param	Authorization		header 	string	true		"Bearer access_token"
+// @Param	Authorization		header 	string	"Bearer access_token"		true		"Bearer access_token"
 // @Param	uid		path 	string	true		"The uid you want to update"
 // @Param	body		body 	models.Person	true		"body for person content"
 // @Success 200 {object} models.PersonActionOneResp
@@ -205,7 +205,7 @@ func (t *PersonController) Put() {
 
 // @Title Delete
 // @Description delete the person
-// @Param	Authorization		header 	string	true		"Bearer access_token"
+// @Param	Authorization		header 	string	"Bearer access_token"		true		"Bearer access_token"
 // @Param	uid		path 	string	true		"The uid you want to delete"
 // @Success 200 {object} models.PersonActionOneResp
 // @Failure 403 uid is empty

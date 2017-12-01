@@ -115,7 +115,7 @@ func (t *TestController) GetAll() {
 
 // @Title CreateTest
 // @Description create test
-// @Param	Authorization		header 	string	true		"Bearer access_token"
+// @Param	Authorization		header 	string	"Bearer access_token"		true		"Bearer access_token"
 // @Param	body		body 	models.Test	true		"body for test content"
 // @Success 200 {object} models.TestActionOneResp
 // @Failure 403 body is empty
@@ -191,7 +191,7 @@ func (t *TestController) Post() {
 
 // @Title Update
 // @Description update the test
-// @Param	Authorization		header 	string	true		"Bearer access_token"
+// @Param	Authorization		header 	string	"Bearer access_token"		true		"Bearer access_token"
 // @Param	uid		path 	string	true		"The uid you want to update"
 // @Param	body		body 	models.Test	true		"body for test content"
 // @Success 200 {object} models.TestActionOneResp
@@ -265,7 +265,7 @@ func (t *TestController) Put() {
 
 // @Title Delete
 // @Description delete the test
-// @Param	Authorization		header 	string	true		"Bearer access_token"
+// @Param	Authorization		header 	string	"Bearer access_token"		true		"Bearer access_token"
 // @Param	uid		path 	string	true		"The uid you want to delete"
 // @Success 200 {object} models.TestActionOneResp
 // @Failure 403 uid is empty
