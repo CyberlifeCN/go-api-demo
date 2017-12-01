@@ -43,7 +43,7 @@ type TestActionOneResp struct {
 
 func GetAllTest(idx int, limit int) ([]Test,int) {
 	//查询数据
-	rows, err := dbPool.Query("SELECT _id,name,ctime,mtime FROM test limit ?,?", idx, limit)
+	rows, err := GlobalMysqlConnPool.Query("SELECT _id,name,ctime,mtime FROM test limit ?,?", idx, limit)
 	checkErr(err)
 
 	var size int = 0
@@ -73,7 +73,7 @@ func GetAllTest(idx int, limit int) ([]Test,int) {
 func GetAllTestCount() int {
 	//查询数据
 	var num int
-	err := dbPool.QueryRow("SELECT count(_id) as num FROM test").Scan(&num)
+	err := GlobalMysqlConnPool.QueryRow("SELECT count(_id) as num FROM test").Scan(&num)
 	checkErr(err)
 
 	return num
@@ -86,7 +86,7 @@ func GetTest(uid string) *Test {
 	var name string
 	var ctime int64
 	var mtime int64
-	err := dbPool.QueryRow("SELECT _id,name,ctime,mtime FROM test WHERE _id=?", uid).Scan(&_id, &name, &ctime, &mtime)
+	err := GlobalMysqlConnPool.QueryRow("SELECT _id,name,ctime,mtime FROM test WHERE _id=?", uid).Scan(&_id, &name, &ctime, &mtime)
 	if (err != nil) {
 		return nil
 	} else {
@@ -106,7 +106,7 @@ func GetTest(uid string) *Test {
 
 func AddTest(tt Test) {
 	//插入数据
-	stmt, err := dbPool.Prepare("INSERT test SET _id=?,name=?,ctime=?,mtime=?")
+	stmt, err := GlobalMysqlConnPool.Prepare("INSERT test SET _id=?,name=?,ctime=?,mtime=?")
 	checkErr(err)
 
 	res, err := stmt.Exec(tt.Id, tt.Name, tt.Ctime, tt.Mtime)
@@ -120,7 +120,7 @@ func AddTest(tt Test) {
 
 func UpdateTest(uid string, tt *Test) {
 	//更新数据
-	stmt, err := dbPool.Prepare("UPDATE test set name=?,mtime=? WHERE _id=?")
+	stmt, err := GlobalMysqlConnPool.Prepare("UPDATE test set name=?,mtime=? WHERE _id=?")
 	checkErr(err)
 
 	res, err := stmt.Exec(tt.Name, tt.Mtime, uid)
@@ -135,7 +135,7 @@ func UpdateTest(uid string, tt *Test) {
 
 func DeleteTest(uid string) {
 	//删除数据
-	stmt, err := dbPool.Prepare("DELETE FROM test WHERE _id=?")
+	stmt, err := GlobalMysqlConnPool.Prepare("DELETE FROM test WHERE _id=?")
 	checkErr(err)
 
 	res, err := stmt.Exec(uid)

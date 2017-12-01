@@ -6,7 +6,7 @@ import (
 	// "database/sql"
   "log"
 	// "fmt"
-  "gopkg.in/mgo.v2"
+  // "gopkg.in/mgo.v2"
   "gopkg.in/mgo.v2/bson"
 )
 
@@ -30,26 +30,16 @@ type PersonActionOneResp struct {
 }
 
 
-const (
-  URL = "mongodb://legend_dev:uWx-nJs-8J3-vA9@123.56.165.59:3717/legend_dev"
-)
-
 func GetPerson(uid string) *Person {
-  session, err := mgo.Dial(URL)
-  if err != nil {
-    panic(err)
-  }
+  session := GlobalMgoSession.Clone()
   defer session.Close()
-
-  // Optional. Switch the session to a monotonic behavior.
-  session.SetMode(mgo.Monotonic, true)
 
   c := session.DB("legend_dev").C("people")
 
   //查询数据
   var result = &Person{}
   query := c.Find(bson.M{"_id": uid})
-  err = query.One(result)
+  var err = query.One(result)
   if err != nil {
     log.Print(err)
     return nil
@@ -66,18 +56,12 @@ func GetPerson(uid string) *Person {
 
 func AddPerson(p Person) {
 	//插入数据
-  session, err := mgo.Dial(URL)
-  if err != nil {
-    panic(err)
-  }
+  session := GlobalMgoSession.Clone()
   defer session.Close()
-
-  // Optional. Switch the session to a monotonic behavior.
-  session.SetMode(mgo.Monotonic, true)
 
   c := session.DB("legend_dev").C("people")
 
-  err = c.Insert(p)
+  var err = c.Insert(p)
   if err != nil {
     panic(err)
   }
@@ -86,18 +70,12 @@ func AddPerson(p Person) {
 
 func UpdatePerson(p Person) {
 	//修改数据
-  session, err := mgo.Dial(URL)
-  if err != nil {
-    panic(err)
-  }
+  session := GlobalMgoSession.Clone()
   defer session.Close()
-
-  // Optional. Switch the session to a monotonic behavior.
-  session.SetMode(mgo.Monotonic, true)
 
   c := session.DB("legend_dev").C("people")
 
-  err = c.Update(bson.M{"_id": p.Id}, bson.M{"$set": bson.M{"name": p.Name, "phone":p.Phone}})
+  var err = c.Update(bson.M{"_id": p.Id}, bson.M{"$set": bson.M{"name": p.Name, "phone":p.Phone}})
   if err != nil {
     panic(err)
   }
@@ -106,18 +84,12 @@ func UpdatePerson(p Person) {
 
 func DeletePerson(uid string) {
 	//删除数据
-  session, err := mgo.Dial(URL)
-  if err != nil {
-    panic(err)
-  }
+  session := GlobalMgoSession.Clone()
   defer session.Close()
-
-  // Optional. Switch the session to a monotonic behavior.
-  session.SetMode(mgo.Monotonic, true)
 
   c := session.DB("legend_dev").C("people")
 
-  _, err = c.RemoveAll(bson.M{"_id": uid})
+  var _, err = c.RemoveAll(bson.M{"_id": uid})
   if err != nil {
     panic(err)
   }
