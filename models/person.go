@@ -23,12 +23,6 @@ type PersonQueryOneResp struct {
   Rs   	 		Person 										`json:"rs"`
 }
 
-type PersonActionOneResp struct {
-	Code   		int 											`json:"err_code"`
-	Msg    		string 										`json:"err_msg"`
-  Rs   	 		string 										`json:"rs"`
-}
-
 
 func GetPerson(uid string) *Person {
   session := GlobalMgoSession.Clone()

@@ -115,9 +115,9 @@ func (t *TestController) GetAll() {
 
 // @Title CreateTest
 // @Description create test
-// @Param	Authorization		header 	string	"Bearer access_token"		true		"Bearer access_token"
+// @Param	Authorization		header 	string	"Bearer access_token"		true		"Authorization=Bearer access_token"
 // @Param	body		body 	models.Test	true		"body for test content"
-// @Success 200 {object} models.TestActionOneResp
+// @Success 200 {object} models.ActionOneResp
 // @Failure 403 body is empty
 // @router / [post]
 func (t *TestController) Post() {
@@ -129,7 +129,7 @@ func (t *TestController) Post() {
 	json.Unmarshal(t.Ctx.Input.RequestBody, &test)
 	beego.Trace(test)
 	if (test.Name == "") {
-		var rs = &models.TestActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 403,
 			Msg: "Bad Request",
 		}
@@ -143,7 +143,7 @@ func (t *TestController) Post() {
 	auth := t.Ctx.Input.Header("Authorization")
 	beego.Trace(auth)
 	if (auth == "") {
-		var rs = &models.TestActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 401,
 			Msg: "Unauthorized",
 		}
@@ -156,7 +156,7 @@ func (t *TestController) Post() {
 	access_token := strings.Replace(auth, "Bearer ", "", -1)
 	beego.Trace(access_token)
 	if (access_token == "") {
-		var rs = &models.TestActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 401,
 			Msg: "Unauthorized",
 		}
@@ -178,7 +178,7 @@ func (t *TestController) Post() {
 
 	models.AddTest(test)
 
-	var rs = &models.TestActionOneResp{
+	var rs = &models.ActionOneResp{
 		Code: 200,
 		Msg: "Success",
 		Rs: uid,
@@ -191,10 +191,10 @@ func (t *TestController) Post() {
 
 // @Title Update
 // @Description update the test
-// @Param	Authorization		header 	string	"Bearer access_token"		true		"Bearer access_token"
+// @Param	Authorization		header 	string	"Bearer access_token"		true		"Authorization=Bearer access_token"
 // @Param	uid		path 	string	true		"The uid you want to update"
 // @Param	body		body 	models.Test	true		"body for test content"
-// @Success 200 {object} models.TestActionOneResp
+// @Success 200 {object} models.ActionOneResp
 // @Failure 403 :uid is empty, or body is empty
 // @router /:uid [put]
 func (t *TestController) Put() {
@@ -208,7 +208,7 @@ func (t *TestController) Put() {
 	beego.Trace(test)
 
 	if (test.Name == "") {
-		var rs = &models.TestActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 403,
 			Msg: "Bad Request",
 		}
@@ -222,7 +222,7 @@ func (t *TestController) Put() {
 	auth := t.Ctx.Input.Header("Authorization")
 	beego.Trace(auth)
 	if (auth == "") {
-		var rs = &models.TestActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 401,
 			Msg: "Unauthorized",
 		}
@@ -235,7 +235,7 @@ func (t *TestController) Put() {
 	access_token := strings.Replace(auth, "Bearer ", "", -1)
 	beego.Trace(access_token)
 	if (access_token == "") {
-		var rs = &models.TestActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 401,
 			Msg: "Unauthorized",
 		}
@@ -252,7 +252,7 @@ func (t *TestController) Put() {
 	test.Mtime = timestamp
 	models.UpdateTest(uid, &test)
 
-	var rs = &models.TestActionOneResp{
+	var rs = &models.ActionOneResp{
 		Code: 200,
 		Msg: "Success",
 		Rs: uid,
@@ -265,9 +265,9 @@ func (t *TestController) Put() {
 
 // @Title Delete
 // @Description delete the test
-// @Param	Authorization		header 	string	"Bearer access_token"		true		"Bearer access_token"
+// @Param	Authorization		header 	string	"Bearer access_token"		true		"Authorization=Bearer access_token"
 // @Param	uid		path 	string	true		"The uid you want to delete"
-// @Success 200 {object} models.TestActionOneResp
+// @Success 200 {object} models.ActionOneResp
 // @Failure 403 uid is empty
 // @router /:uid [delete]
 func (t *TestController) Delete() {
@@ -281,7 +281,7 @@ func (t *TestController) Delete() {
 	auth := t.Ctx.Input.Header("Authorization")
 	beego.Trace(auth)
 	if (auth == "") {
-		var rs = &models.TestActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 401,
 			Msg: "Unauthorized",
 		}
@@ -294,7 +294,7 @@ func (t *TestController) Delete() {
 	access_token := strings.Replace(auth, "Bearer ", "", -1)
 	beego.Trace(access_token)
 	if (access_token == "") {
-		var rs = &models.TestActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 401,
 			Msg: "Unauthorized",
 		}
@@ -308,7 +308,7 @@ func (t *TestController) Delete() {
 
 	models.DeleteTest(uid)
 
-	var rs = &models.TestActionOneResp{
+	var rs = &models.ActionOneResp{
 		Code: 200,
 		Msg: "Success",
 		Rs: uid,

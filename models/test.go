@@ -34,12 +34,6 @@ type TestQueryOneResp struct {
   Rs   	 		Test 											`json:"rs"`
 }
 
-type TestActionOneResp struct {
-	Code   		int 											`json:"err_code"`
-	Msg    		string 										`json:"err_msg"`
-  Rs   	 		string 										`json:"rs"`
-}
-
 
 func GetAllTest(idx int, limit int) ([]Test,int) {
 	//查询数据

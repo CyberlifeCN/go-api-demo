@@ -17,6 +17,13 @@ const (
 )
 
 
+type ActionOneResp struct {
+	Code   		int 											`json:"err_code"`
+	Msg    		string 										`json:"err_msg"`
+  Rs   	 		string 										`json:"rs"`
+}
+
+
 func init() {
 	// init mysql connection pool
 	GlobalMysqlConnPool, _ = sql.Open("mysql", "legend_dev:need4sPeed@tcp(rm-2zeyubz4yre340644o.mysql.rds.aliyuncs.com:3306)/legend_dev?charset=utf8mb4")
@@ -28,7 +35,7 @@ func init() {
 	// init mongodb connection pool
 	globalMgoSession, err := mgo.DialWithTimeout(URL, 10 * time.Second)
 	if err != nil {
-			panic(err)
+		panic(err)
 	}
 	GlobalMgoSession = globalMgoSession
 	// Optional. Switch the session to a monotonic behavior.

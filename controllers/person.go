@@ -60,9 +60,9 @@ func (t *PersonController) Get() {
 
 // @Title CreatePerson
 // @Description create person
-// @Param	Authorization		header 	string	"Bearer access_token"		true		"Bearer access_token"
+// @Param	Authorization		header 	string	"Bearer access_token"		true		"Authorization=Bearer access_token"
 // @Param	body		body 	models.Person	true		"body for person content"
-// @Success 200 {object} models.PersonActionOneResp
+// @Success 200 {object} models.ActionOneResp
 // @Failure 403 body is empty
 // @router / [post]
 func (t *PersonController) Post() {
@@ -74,7 +74,7 @@ func (t *PersonController) Post() {
 	json.Unmarshal(t.Ctx.Input.RequestBody, &person)
 	beego.Trace(person)
 	if (person.Name == "") {
-		var rs = &models.PersonActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 403,
 			Msg: "Bad Request",
 		}
@@ -88,7 +88,7 @@ func (t *PersonController) Post() {
 	auth := t.Ctx.Input.Header("Authorization")
 	beego.Trace(auth)
 	if (auth == "") {
-		var rs = &models.PersonActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 401,
 			Msg: "Unauthorized",
 		}
@@ -101,7 +101,7 @@ func (t *PersonController) Post() {
 	access_token := strings.Replace(auth, "Bearer ", "", -1)
 	beego.Trace(access_token)
 	if (access_token == "") {
-		var rs = &models.PersonActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 401,
 			Msg: "Unauthorized",
 		}
@@ -120,7 +120,7 @@ func (t *PersonController) Post() {
 
 	models.AddPerson(person)
 
-	var rs = &models.PersonActionOneResp{
+	var rs = &models.ActionOneResp{
 		Code: 200,
 		Msg: "Success",
 		Rs: uid,
@@ -133,10 +133,10 @@ func (t *PersonController) Post() {
 
 // @Title Update
 // @Description update the person
-// @Param	Authorization		header 	string	"Bearer access_token"		true		"Bearer access_token"
+// @Param	Authorization		header 	string	"Bearer access_token"		true		"Authorization=Bearer access_token"
 // @Param	uid		path 	string	true		"The uid you want to update"
 // @Param	body		body 	models.Person	true		"body for person content"
-// @Success 200 {object} models.PersonActionOneResp
+// @Success 200 {object} models.ActionOneResp
 // @Failure 403 :uid is empty, or body is empty
 // @router /:uid [put]
 func (t *PersonController) Put() {
@@ -150,7 +150,7 @@ func (t *PersonController) Put() {
 	beego.Trace(person)
 
 	if (person.Name == "") {
-		var rs = &models.PersonActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 403,
 			Msg: "Bad Request",
 		}
@@ -164,7 +164,7 @@ func (t *PersonController) Put() {
 	auth := t.Ctx.Input.Header("Authorization")
 	beego.Trace(auth)
 	if (auth == "") {
-		var rs = &models.PersonActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 401,
 			Msg: "Unauthorized",
 		}
@@ -177,7 +177,7 @@ func (t *PersonController) Put() {
 	access_token := strings.Replace(auth, "Bearer ", "", -1)
 	beego.Trace(access_token)
 	if (access_token == "") {
-		var rs = &models.PersonActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 401,
 			Msg: "Unauthorized",
 		}
@@ -192,7 +192,7 @@ func (t *PersonController) Put() {
 	person.Id = uid
 	models.UpdatePerson(person)
 
-	var rs = &models.PersonActionOneResp{
+	var rs = &models.ActionOneResp{
 		Code: 200,
 		Msg: "Success",
 		Rs: uid,
@@ -205,9 +205,9 @@ func (t *PersonController) Put() {
 
 // @Title Delete
 // @Description delete the person
-// @Param	Authorization		header 	string	"Bearer access_token"		true		"Bearer access_token"
+// @Param	Authorization		header 	string	"Bearer access_token"		true		"Authorization=Bearer access_token"
 // @Param	uid		path 	string	true		"The uid you want to delete"
-// @Success 200 {object} models.PersonActionOneResp
+// @Success 200 {object} models.ActionOneResp
 // @Failure 403 uid is empty
 // @router /:uid [delete]
 func (t *PersonController) Delete() {
@@ -221,7 +221,7 @@ func (t *PersonController) Delete() {
 	auth := t.Ctx.Input.Header("Authorization")
 	beego.Trace(auth)
 	if (auth == "") {
-		var rs = &models.PersonActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 401,
 			Msg: "Unauthorized",
 		}
@@ -234,7 +234,7 @@ func (t *PersonController) Delete() {
 	access_token := strings.Replace(auth, "Bearer ", "", -1)
 	beego.Trace(access_token)
 	if (access_token == "") {
-		var rs = &models.PersonActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 401,
 			Msg: "Unauthorized",
 		}
@@ -248,7 +248,7 @@ func (t *PersonController) Delete() {
 
 	models.DeletePerson(uid)
 
-	var rs = &models.PersonActionOneResp{
+	var rs = &models.ActionOneResp{
 		Code: 200,
 		Msg: "Success",
 		Rs: uid,

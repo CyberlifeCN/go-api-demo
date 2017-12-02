@@ -55,9 +55,9 @@ func (t *MemcacheController) Get() {
 
 // @Title CreateMemcache
 // @Description create memcache
-// @Param	Authorization		header 	string	"Bearer access_token"   true		"Bearer access_token"
+// @Param	Authorization		header 	string	"Bearer access_token"   true		"Authorization=Bearer access_token"
 // @Param	body		body 	models.Test	true		"body for test content"
-// @Success 200 {object} models.TestActionOneResp
+// @Success 200 {object} models.ActionOneResp
 // @Failure 403 body is empty
 // @router / [post]
 func (t *MemcacheController) Post() {
@@ -69,7 +69,7 @@ func (t *MemcacheController) Post() {
 	json.Unmarshal(t.Ctx.Input.RequestBody, &test)
 	beego.Trace(test)
 	if (test.Name == "") {
-		var rs = &models.TestActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 403,
 			Msg: "Bad Request",
 		}
@@ -83,7 +83,7 @@ func (t *MemcacheController) Post() {
 	auth := t.Ctx.Input.Header("Authorization")
 	beego.Trace(auth)
 	if (auth == "") {
-		var rs = &models.TestActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 401,
 			Msg: "Unauthorized",
 		}
@@ -96,7 +96,7 @@ func (t *MemcacheController) Post() {
 	access_token := strings.Replace(auth, "Bearer ", "", -1)
 	beego.Trace(access_token)
 	if (access_token == "") {
-		var rs = &models.TestActionOneResp{
+		var rs = &models.ActionOneResp{
 			Code: 401,
 			Msg: "Unauthorized",
 		}
@@ -118,7 +118,7 @@ func (t *MemcacheController) Post() {
 
 	models.AddMemcache(test)
 
-	var rs = &models.TestActionOneResp{
+	var rs = &models.ActionOneResp{
 		Code: 200,
 		Msg: "Success",
 		Rs: uid,

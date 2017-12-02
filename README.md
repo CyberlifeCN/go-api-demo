@@ -42,23 +42,36 @@ HTTP response codes:
 
 $ go get gopkg.in/mgo.v2
 
-''# test for mongodb
-2571 fetches, 10 max parallel, 277668 bytes, in 10 seconds
+## multiple http fetches in parallel
+./http_load -p 10 -s 10 url.txt
+$ vi url.txt
+http://go.domicake.com/api/person
+
+6269 fetches, 100 max parallel, 677052 bytes, in 10 seconds
 108 mean bytes/connection
-257.1 fetches/sec, 27766.8 bytes/sec
-msecs/connect: 0.0540397 mean, 1.56 max, 0.018 min
-msecs/first-response: 38.7706 mean, 325.844 max, 33.872 min
+626.9 fetches/sec, 67705.2 bytes/sec
+msecs/connect: 0.111617 mean, 3.937 max, 0.028 min
+msecs/first-response: 124.162 mean, 8285.98 max, 33.903 min
 HTTP response codes:
-  code 200 -- 2571
+  code 200 -- 6269
 
 
 # golang-memcache
 $ go get github.com/bradfitz/gomemcache/memcache
 
-8686 fetches, 10 max parallel, 3.43822e+06 bytes, in 10 seconds
+## multiple http fetches in parallel
+./http_load -p 100 -s 10 url.txt
+$ vi url.txt
+http://go.domicake.com/api/memcache
+
+15866 fetches, 100 max parallel, 2.91934e+06 bytes, in 10 seconds
 184 mean bytes/connection
-1868.6 fetches/sec, 343822 bytes/sec
-msecs/connect: 0.0410613 mean, 3.079 max, 0.018 min
-msecs/first-response: 5.30374 mean, 19.324 max, 0.903 min
+1586.6 fetches/sec, 291934 bytes/sec
+msecs/connect: 0.0603796 mean, 5.536 max, 0.022 min
+msecs/first-response: 62.6842 mean, 139.218 max, 1.171 min
 HTTP response codes:
-  code 200 -- 18686
+  code 200 -- 15866
+
+
+# golang-rpcx
+$ go get -u -v -tags "reuseport quic kcp zookeeper etcd consul ping" github.com/smallnest/rpcx/...
