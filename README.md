@@ -73,5 +73,12 @@ HTTP response codes:
   code 200 -- 15866
 
 
-# golang-rpcx
-$ go get -u -v -tags "reuseport quic kcp zookeeper etcd consul ping" github.com/smallnest/rpcx/...
+# golang-rpc
+
+2649 fetches, 100 max parallel, 447681 bytes, in 10 seconds
+169 mean bytes/connection
+264.9 fetches/sec, 44768.1 bytes/sec
+msecs/connect: 0.117413 mean, 8.438 max, 0.03 min
+msecs/first-response: 345.759 mean, 3774.71 max, 66.315 min
+HTTP response codes:
+  code 200 -- 2649

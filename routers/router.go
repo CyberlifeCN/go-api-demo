@@ -30,6 +30,11 @@ func init() {
 				&controllers.MemcacheController{},
 			),
 		),
+		beego.NSNamespace("/rpc",
+			beego.NSInclude(
+				&controllers.RpcController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }
