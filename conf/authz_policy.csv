@@ -1,0 +1,11 @@
+p, alice, 0.0.0.0/0, /dataset1/*, GET
+p, alice, 127.0.0.1/24, /dataset1/resource1, POST
+p, bob, 127.0.0.1/24, /dataset2/resource1, *
+p, bob, 0.0.0.0/0, /dataset2/resource2, GET
+p, bob, 127.0.0.1/24, /dataset2/folder1/*, POST
+p, dataset1_admin, 127.0.0.1/24, /dataset1/*, *
+g, cathy, dataset1_admin
+p, alice, 0.0.0.0/0, /api/test/*, GET
+p, alice, 0.0.0.0/0, /api/test/*, POST
+p, alice, 0.0.0.0/0, /api/test/*, PUT
+p, alice, 0.0.0.0/0, /api/test/*, DELETE
