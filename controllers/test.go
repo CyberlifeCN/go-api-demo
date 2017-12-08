@@ -69,14 +69,23 @@ func (t *TestController) Get() {
 // @Param	limit 	query		int		20	false		"One page size"
 // @Success 200		{object} models.TestQueryAllResp
 // @router / [get]
-func (t *TestController) GetAll() {
-	uri := t.Ctx.Input.URI()
+func (this *TestController) GetAll() {
+	uri := this.Ctx.Input.URI()
   beego.Info(uri)
+	authString := this.Ctx.Input.Header("Authorization")
+	beego.Debug("AuthString:", authString)
+
+	kv := strings.Split(authString, " ")
+  if len(kv) != 2 || kv[0] != "Bearer" {
+    beego.Error("AuthString invalid:", authString)
+  }
+  tokenString := kv[1]
+	beego.Debug("TokenString:", tokenString)
 
 	var page int = 0
-	t.Ctx.Input.Bind(&page, "page")  //page==1
+	this.Ctx.Input.Bind(&page, "page")  //page==1
 	var limit int = 20
-	t.Ctx.Input.Bind(&limit, "limit")  //limit==20
+	this.Ctx.Input.Bind(&limit, "limit")  //limit==20
 	if (page <= 0) {
 		page = 1
 	}
@@ -108,8 +117,8 @@ func (t *TestController) GetAll() {
 		},
 	}
 
-	t.Data["json"] = *rs
-	t.ServeJSON()
+	this.Data["json"] = *rs
+	this.ServeJSON()
 }
 
 
